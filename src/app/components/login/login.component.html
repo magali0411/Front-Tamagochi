@@ -1,0 +1,54 @@
+  <!-- Page de login -->
+
+<div class="content" role="main">
+
+  <mat-card class="mat-elevation-z5">
+
+    <mat-card-header>
+      <mat-card-title>Page de connection</mat-card-title>
+      <mat-card-subtitle> {{todayDate | date:'longDate'}}  </mat-card-subtitle>
+    </mat-card-header>
+  
+    <mat-card-content>
+  
+      <form #logForm="ngForm" (ngSubmit)="onSubmit()" [hidden]="submitted">
+        <div class="login-container">
+          <div class="row">
+
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Username</label>
+                <input type="texte"  #username="ngModel" id="username" name="username" placeholder="type your name.." required class="form-control" [(ngModel)]="user.username">
+                <div [hidden]="username.valid || username.pristine"class="alert alert-danger"> Nom d'utilisateur requis</div>
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Mot de passe</label>
+                <input type="password" #password = "ngModel" placeholder="type your password.." id ="password" name="password" required class="form-control" [(ngModel)]="user.password" > 
+                <div [hidden]="password.valid || password.pristine" class="alert alert-danger"> Mot de passe requis</div>
+              </div>
+            </div>
+
+            <div class="btn-group">
+              <div class="form-group">
+                <button type="submit" class="btn btn-success" [disabled]="!logForm.form.valid" >Login</button>
+                <button type="button" class="btn btn-primary" (click)="newUser(); logForm.reset()">Nouvel utilisateur</button> 
+                <div class="clearfix"></div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </form>
+    </mat-card-content>
+
+    <div class="redirection" [hidden]="!submitted">        
+        <h1>Bienvenue {{ user.username }} </h1>
+        <p> redirection en cours ...  </p>
+      <br>
+    </div>
+  
+  </mat-card>
+</div>
