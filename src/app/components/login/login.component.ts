@@ -4,19 +4,21 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Input } from '@angular/core';
 import { Logger } from './logger';
 import { Observable } from 'rxjs';
-import { LoginService } from './login.service';
+import { LoginService } from '../../service/auth/login.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.css'],
+  providers: [LoginService]
 })
 
 export class LoginComponent implements OnInit {
 
-  constructor(private authenticationService: LoginService) { }
+  constructor(
+    private authenticationService: LoginService) { }
 
   ngOnInit(): void {
   }
@@ -25,23 +27,20 @@ export class LoginComponent implements OnInit {
   
   todayDate : Date = new Date();
   user : Logger = new Logger();
-
-  invalidLogin = false;
-  loginSuccess = false;
   
   submitted = false;
 
 
   onSubmit() {
     this.submitted = true;
+    this.authenticationService.loginService(this.user);
+  }
 
-    this.authenticationService.loginService(this.user.username, this.user.password).subscribe((result)=> {
-      this.invalidLogin = false;
-      this.loginSuccess = true;
-    }, () => {
-      this.invalidLogin = true;
-      this.loginSuccess = false;
-    });      
+  
+  newUser() {
+    this.user = new Logger();
+    console.log('création du nouvel utilisateur');
+    this.authenticationService.newUser(this.user);
   }
 
 
@@ -60,12 +59,6 @@ export class LoginComponent implements OnInit {
   //};
 
 
-  newUser() {
-    this.user = new Logger();
-    console.log('création du nouvel utilisateur');
-  }
 
-
-  get diagnostic() { return JSON.stringify(this.user.username); }
 
 }
